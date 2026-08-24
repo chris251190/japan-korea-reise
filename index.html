@@ -67,6 +67,8 @@
   .section-head .tag-note{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-family: ui-monospace,monospace;}
 
   .ledger-scroll{overflow-x:auto;}
+  .scroll-hint{display:none;font-size:.68rem;color:var(--ink-soft);font-family:ui-monospace,monospace;letter-spacing:.03em;margin:-.3rem 0 .6rem;}
+  @media (max-width:640px){ .scroll-hint{display:block;} }
   table.ledger{width:100%;border-collapse:collapse;font-size:.92rem;min-width:560px;}
   table.ledger th{ text-align:left;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase; color:var(--ink-soft);font-weight:600;padding:.5rem .6rem;border-bottom:1px solid var(--rule); }
   table.ledger td{padding:.6rem .6rem;border-bottom:1px solid var(--rule);vertical-align:top;}
@@ -85,12 +87,19 @@
   .chapter-head h3{font-size:1.2rem;font-weight:600;}
   .chapter-head .range{font-family: ui-monospace,monospace;font-size:.78rem;color:var(--ink-soft);}
   .chapter-head .range b{color:var(--ink);}
-  .day{display:grid;grid-template-columns:88px 1fr;gap:0;border-bottom:1px solid var(--rule);}
-  .day:last-child{border-bottom:none;}
-  .day-date{ padding:.95rem .9rem;background:color-mix(in srgb, var(--indigo) 6%, transparent); font-family: ui-monospace,monospace;font-size:.78rem;color:var(--indigo); border-right:1px solid var(--rule); }
-  .day-date .dow{display:block;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-top:.15rem;}
-  .day-body{padding:.95rem 1.1rem;}
-  .day-title{font-weight:700;font-size:.98rem;margin-bottom:.3rem;}
+  details.day{border-bottom:1px solid var(--rule);}
+  details.day:last-child{border-bottom:none;}
+  .day-summary{display:flex;align-items:center;gap:.7rem;padding:.85rem 1.1rem;cursor:pointer;list-style:none;-webkit-tap-highlight-color:transparent;}
+  .day-summary::-webkit-details-marker{display:none;}
+  .day-summary::marker{content:"";}
+  .day-summary:hover{background:color-mix(in srgb, var(--indigo) 5%, transparent);}
+  .day-summary:focus-visible{outline:2px solid var(--indigo);outline-offset:-2px;}
+  .day-date{flex:none;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--indigo);background:color-mix(in srgb, var(--indigo) 10%, transparent);padding:.3rem .5rem;border-radius:5px;display:flex;flex-direction:column;align-items:center;line-height:1.25;min-width:3.3rem;text-align:center;}
+  .day-date .dow{font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+  .day-body{padding:0 1.1rem 1.1rem 1.1rem;}
+  .day-title{flex:1 1 auto;font-weight:700;font-size:.95rem;color:var(--ink);}
+  .day-chevron{flex:none;color:var(--ink-soft);font-size:.8rem;transition:transform .2s ease;}
+  details.day[open] .day-chevron{transform:rotate(180deg);}
   .day-desc{color:var(--ink-soft);font-size:.9rem;}
   .day-desc b{color:var(--ink);font-weight:600;}
   .tags{margin-top:.5rem;display:flex;gap:.4rem;flex-wrap:wrap;}
@@ -149,20 +158,40 @@
   footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);color:var(--ink-soft);font-size:.82rem;}
 
   html{scroll-behavior:smooth;}
-  [id]{scroll-margin-top:4rem;}
-  .topnav{position:sticky;top:0;z-index:50;background:var(--paper-raised);border-bottom:1px solid var(--rule);}
-  .topnav-inner{max-width:840px;margin:0 auto;padding:.55rem 1.25rem;display:flex;gap:.45rem;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  [id]{scroll-margin-top:4.75rem;}
+  .progressbar{position:sticky;top:0;left:0;right:0;height:3px;z-index:60;background:transparent;}
+  .progressbar-fill{height:100%;width:0%;background:var(--kaki);transition:width .1s linear;}
+  .topnav{position:sticky;top:3px;z-index:50;background:var(--paper-raised);border-bottom:1px solid var(--rule);}
+  .topnav-row{max-width:840px;margin:0 auto;padding:.5rem 1.25rem;display:flex;align-items:center;gap:.6rem;}
+  .topnav-inner{flex:1 1 auto;display:flex;gap:.4rem;overflow-x:auto;-webkit-overflow-scrolling:touch;min-width:0;}
   .topnav-inner::-webkit-scrollbar{height:4px;}
-  .topnav a{flex:none;font-family:ui-monospace,monospace;font-size:.68rem;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);text-decoration:none;padding:.35rem .7rem;border:1px solid var(--rule);border-radius:999px;white-space:nowrap;}
+  .topnav a{flex:none;font-family:ui-monospace,monospace;font-size:.68rem;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);text-decoration:none;padding:.4rem .7rem;border:1px solid var(--rule);border-radius:999px;white-space:nowrap;min-height:1.9rem;display:inline-flex;align-items:center;}
+  .topnav a.active{color:var(--paper);background:var(--indigo);border-color:var(--indigo);}
   .topnav a:hover,.topnav a:focus-visible{color:var(--indigo);border-color:var(--indigo);}
-  .backtotop{position:fixed;bottom:1.1rem;right:1.1rem;z-index:50;background:var(--stub-bg);color:var(--stub-ink);width:2.5rem;height:2.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.05rem;box-shadow:0 3px 10px rgba(0,0,0,.28);}
+  .topnav a.active:hover{color:var(--paper);}
+  .topnav .navsep{flex:none;width:1px;align-self:stretch;background:var(--rule);margin:0 .1rem;}
+  .theme-toggle{flex:none;width:2rem;height:2rem;border-radius:50%;border:1px solid var(--rule);background:var(--paper);color:var(--ink-soft);cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;padding:0;}
+  .theme-toggle:hover{border-color:var(--indigo);color:var(--indigo);}
+  .backtotop{position:fixed;bottom:1.1rem;right:1.1rem;z-index:50;background:var(--stub-bg);color:var(--stub-ink);width:2.75rem;height:2.75rem;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.05rem;box-shadow:0 3px 10px rgba(0,0,0,.28);opacity:0;pointer-events:none;transition:opacity .2s ease;}
+  .backtotop.visible{opacity:1;pointer-events:auto;}
   @media (max-width:520px){
     .wrap{padding:1.5rem .9rem 4rem;}
     h1.title{font-size:1.7rem;}
-    .day{grid-template-columns:70px 1fr;}
+    .day-summary{padding:.75rem .85rem;gap:.5rem;}
+    .day-date{font-size:.66rem;min-width:2.9rem;padding:.25rem .4rem;}
+    .day-title{font-size:.88rem;}
+    .day-body{padding:0 .85rem .95rem .85rem;}
     .tl-row{grid-template-columns:52px 1fr;}
     .meal-label{width:4.2rem;font-size:.62rem;}
     .facts{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;animation:none !important;}
+  }
+  @media print{
+    .topnav,.backtotop,.progressbar{display:none !important;}
+    details.day{border-color:#ccc;}
   }
 </style>
 
@@ -428,35 +457,42 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
   </defs>
 </svg>
 
-<nav class="topnav" id="top">
-  <div class="topnav-inner">
-    <a href="#kosten">Kosten</a>
-    <a href="#seoul-1">Seoul</a>
-    <a href="#busan">Busan</a>
-    <a href="#beppu">Beppu</a>
-    <a href="#hiroshima">Hiroshima</a>
-    <a href="#osaka">Osaka</a>
-    <a href="#kyoto">Kyoto</a>
-    <a href="#hakone">Hakone</a>
-    <a href="#tokyo">Tokyo</a>
-    <a href="#seoul-2">Seoul zurück</a>
-    <a href="#onsen-recap">Onsen</a>
-    <a href="#anime-recap">Anime/Gaming</a>
-    <a href="#kpop-recap">K-Pop</a>
-    <a href="#buchungslinks">Buchungslinks</a>
-    <a href="#dos-donts">Do's &amp; Don'ts</a>
-    <a href="#sprachfuehrer">Sprachführer</a>
-    <a href="#vegan-karte">Vegan-Karte</a>
-    <a href="#gepaeckliste">Gepäck</a>
-    <a href="#trip-checkliste">Checkliste</a>
-  </div>
-</nav>
-
-<a href="#top" class="backtotop" aria-label="Nach oben">↑</a>
-
 
 </head>
 <body>
+<div class="progressbar" id="top"><div class="progressbar-fill" id="progressFill"></div></div>
+<nav class="topnav">
+  <div class="topnav-row">
+    <div class="topnav-inner" id="topnavInner">
+      <a href="#kosten" data-nav>Kosten</a>
+      <span class="navsep"></span>
+      <a href="#seoul-1" data-nav>Seoul</a>
+      <a href="#busan" data-nav>Busan</a>
+      <a href="#beppu" data-nav>Beppu</a>
+      <a href="#hiroshima" data-nav>Hiroshima</a>
+      <a href="#osaka" data-nav>Osaka</a>
+      <a href="#kyoto" data-nav>Kyoto</a>
+      <a href="#hakone" data-nav>Hakone</a>
+      <a href="#tokyo" data-nav>Tokyo</a>
+      <a href="#seoul-2" data-nav>Seoul zurück</a>
+      <span class="navsep"></span>
+      <a href="#onsen-recap" data-nav>Onsen</a>
+      <a href="#anime-recap" data-nav>Anime/Gaming</a>
+      <a href="#kpop-recap" data-nav>K-Pop</a>
+      <span class="navsep"></span>
+      <a href="#buchungslinks" data-nav>Buchungslinks</a>
+      <a href="#dos-donts" data-nav>Do's &amp; Don'ts</a>
+      <a href="#sprachfuehrer" data-nav>Sprachführer</a>
+      <a href="#vegan-karte" data-nav>Vegan-Karte</a>
+      <a href="#gepaeckliste" data-nav>Gepäck</a>
+      <a href="#trip-checkliste" data-nav>Checkliste</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Helles/dunkles Design wechseln">◐</button>
+  </div>
+</nav>
+
+<a href="#top" class="backtotop" id="backtotop" aria-label="Nach oben">↑</a>
+
 <div class="wrap">
 
   <div class="masthead">
@@ -529,6 +565,7 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
     <span class="tag-note">Pro Person, Mittelklasse</span>
   </div>
 
+  <div class="scroll-hint">← Tabelle nach rechts wischen für mehr →</div>
   <div class="ledger-scroll">
     <table class="ledger">
       <thead>
@@ -585,47 +622,42 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
       <p>5★, zentral bei Myeongdong/City Hall, aktives veganes Frühstücksangebot ohne Sonderwunsch. Preislich deutlich über dem Budget-Rahmen – als Splurge-Option. Günstiger: Guesthouse in Myeongdong/Insadong über Booking.com, dazu Frühstück bei Zion Cafe oder Plant Cafe &amp; Kitchen.</p>
     </div>
 
-    <div class="day">
-      <div class="day-date">1.10<span class="dow">Do</span></div>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">1.10<span class="dow">Do</span></span><span class="day-title">Ankunft Seoul</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Ankunft Seoul</div>
 <div class="timeline"><div class="tl-row"><div class="tl-time">14:00</div><div class="tl-text">Landung Incheon (Direktflug ab Hamburg)</div></div><div class="tl-row"><div class="tl-time">16:00</div><div class="tl-text">Check-in, Guesthouse</div></div><div class="tl-row"><div class="tl-time">18:00</div><div class="tl-text">Bummel durch Myeongdong &amp; Insadong</div></div><div class="tl-row"><div class="tl-time">19:30</div><div class="tl-text"><span class="tl-meal">Abend</span><a href="https://www.google.com/maps/search/?api=1&query=Zion%20Cafe%20Insadong%20Seoul%20vegan">Zion Cafe (Insadong)</a></div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">2.10<span class="dow">Fr</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">2.10<span class="dow">Fr</span></span><span class="day-title">DMZ &amp; JSA – Grenze zu Nordkorea</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">DMZ &amp; JSA – Grenze zu Nordkorea</div>
         <div class="day-desc"><b>DMZ- &amp; JSA-Tour</b> ab Seoul: Panmunjom/Joint Security Area (der Ort, an dem man buchstäblich auf der Grenzlinie steht), dazu meist Dritter Infiltrationstunnel, Dora-Observatorium und Imjingak-Park. <b>Reisepass zwingend mitnehmen</b>, Anmeldung mit Passdaten meist 2–3 Tage vorher nötig. JSA-Zugang läuft nur Di–Sa (nicht So/Mo, nicht an Feiertagen) – deshalb bewusst auf einen Freitag gelegt.</div>
         <div class="tags"><span class="tag tag--link">Reisepass nötig</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">07:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span>früh vor Abholung, Guesthouse/Conbini</div></div><div class="tl-row"><div class="tl-time">07:30</div><div class="tl-text">Abholung am Hotel für die Tour</div></div><div class="tl-row"><div class="tl-time">08:30–15:30</div><div class="tl-text">Panmunjom/JSA, Dritter Tunnel, Dora-Observatorium, Imjingak-Park</div></div><div class="tl-row"><div class="tl-time">12:30</div><div class="tl-text"><span class="tl-meal">Mittag</span>meist in der Tour inklusive, vegan vorher beim Anbieter anfragen oder Snacks mitnehmen</div></div><div class="tl-row"><div class="tl-time">16:00</div><div class="tl-text">Rückkehr nach Seoul</div></div><div class="tl-row"><div class="tl-time">19:30</div><div class="tl-text"><span class="tl-meal">Abend</span><a href="https://www.google.com/maps/search/?api=1&query=Zion%20Cafe%20Insadong%20Seoul%20vegan">Zion Cafe (Insadong)</a></div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">3.10<span class="dow">Sa</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">3.10<span class="dow">Sa</span></span><span class="day-title">Gyeongbokgung, Jogyesa &amp; Yongsan</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Gyeongbokgung, Jogyesa &amp; Yongsan</div>
         <div class="day-desc">Ein voller Tag – bei Bedarf Bukchon oder Jogyesa streichen.</div>
         <div class="tags"><span class="tag tag--vegan">Vegan – Tempel-Buffet</span><span class="tag tag--otaku">Gaming</span><span class="tag tag--otaku">K-Pop</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">08:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span>Guesthouse oder Café in Bukchon</div></div><div class="tl-row"><div class="tl-time">09:00</div><div class="tl-text">Palast Gyeongbokgung (optional Hanbok-Verleih)</div></div><div class="tl-row"><div class="tl-time">11:00</div><div class="tl-text">Bukchon Hanok Village</div></div><div class="tl-row"><div class="tl-time">12:30</div><div class="tl-text"><span class="tl-meal">Mittag</span><a href="https://www.google.com/maps/search/?api=1&query=Hangwachae%20Insadong%20Seoul">Hangwachae (Insadong, Tempel-Buffet)</a></div></div><div class="tl-row"><div class="tl-time">14:00</div><div class="tl-text">Jogyesa-Tempel</div></div><div class="tl-row"><div class="tl-time">15:30</div><div class="tl-text">Yongsan Electronics Market</div></div><div class="tl-row"><div class="tl-time">17:00</div><div class="tl-text">optional: <a href="https://www.google.com/maps/search/?api=1&query=KWANGYA%20SEOUL%20Seongsu">KWANGYA@SEOUL</a> (Seongsu)</div></div><div class="tl-row"><div class="tl-time">19:00</div><div class="tl-text"><span class="tl-meal">Abend</span>Hongdae – vor Ort mit HappyCow-App nachschauen, dazu PC-Bang-Cafés</div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">4.10<span class="dow">So</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">4.10<span class="dow">So</span></span><span class="day-title">K-Star Road, Michelin-vegan &amp; Namsan</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">K-Star Road, Michelin-vegan &amp; Namsan</div>
         <div class="day-desc">Seit der Tattoo-Legalisierung in Korea 2025 sind die großen modernen Jjimjilbangs tattoo-freundlich, anders als in Japan meist ohne Sonderbuchung.</div>
         <div class="tags"><span class="tag tag--otaku">K-Pop</span><span class="tag tag--vegan">Vegan – Reservierung</span><span class="tag tag--onsen">Bonus-Bad</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">09:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span><a href="https://www.google.com/maps/search/?api=1&query=Plant%20Cafe%20and%20Kitchen%20Itaewon%20Seoul%20vegan">Plant Cafe &amp; Kitchen (Itaewon)</a></div></div><div class="tl-row"><div class="tl-time">10:30</div><div class="tl-text"><a href="https://www.google.com/maps/search/?api=1&query=K-Star%20Road%20Gangnam%20Seoul">K-Star Road</a> (Gangnam) – Gangnamdols-Bärenstatuen</div></div><div class="tl-row"><div class="tl-time">12:00</div><div class="tl-text">optional: <a href="https://www.klook.com/en-US/activity/3248-kpop-dance-class-seoul/">K-Pop-Dance-Class</a></div></div><div class="tl-row"><div class="tl-time">13:30</div><div class="tl-text"><span class="tl-meal">Mittag/Abend</span><a href="https://www.google.com/maps/search/?api=1&query=Balwoo%20Gongyang%20Seoul">Balwoo Gongyang oder Légume</a> (Reservierung!)</div></div><div class="tl-row"><div class="tl-time">16:00</div><div class="tl-text">Namsan-Turm, Aussicht</div></div><div class="tl-row"><div class="tl-time">18:00</div><div class="tl-text">Bonus-Bad: SPAREX oder Siloam Sauna</div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">5.10<span class="dow">Mo</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">5.10<span class="dow">Mo</span></span><span class="day-title">Letzter Vormittag Seoul → Busan</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Letzter Vormittag Seoul → Busan</div>
 <div class="timeline"><div class="tl-row"><div class="tl-time">08:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span>Guesthouse</div></div><div class="tl-row"><div class="tl-time">09:00</div><div class="tl-text">Souvenirs: Kakao Friends/Line Friends Flagship-Store (Myeongdong)</div></div><div class="tl-row"><div class="tl-time">11:30</div><div class="tl-text">KTX nach Busan (ca. 2,5 Std.)</div></div><div class="tl-row"><div class="tl-time">14:00</div><div class="tl-text">Ankunft Busan</div></div></div>
       </div>
-    </div>
+    </details>
   </div>
 
   <div class="chapter" id="busan">
@@ -646,23 +678,21 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
       <p>Keine dediziert vegane Unterkunft in Busan gefunden. Diese Guesthouse ist günstig, mit Frühstück, fußläufig zu Haeundae/Jung-dong-Station – fürs Essen auf HOME Bistro, Vegenarang und Soban Vegan ausweichen (siehe Tagesplan).</p>
     </div>
 
-    <div class="day">
-      <div class="day-date">5.10<span class="dow">Mo</span></div>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">5.10<span class="dow">Mo</span></span><span class="day-title">Ankunft Busan, Gamcheon &amp; Haeundae</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Ankunft Busan, Gamcheon &amp; Haeundae</div>
         <div class="day-desc">Nur eine Nacht in Busan – Highlights kompakt: bunte Häuser in Gamcheon, dann an den Strand. <b>Beomeosa-Tempel &amp; Jagalchi-Fischmarkt fallen diesmal weg</b> (Reise ist jetzt als Rundreise ab/bis Seoul geplant, Korea-Teil dafür etwas gestrafft).</div>
         <div class="tags"><span class="tag tag--vegan">Vegan</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">14:00</div><div class="tl-text">Ankunft per KTX von Seoul, Check-in</div></div><div class="tl-row"><div class="tl-time">15:00</div><div class="tl-text">Gamcheon Culture Village</div></div><div class="tl-row"><div class="tl-time">17:30</div><div class="tl-text">Haeundae Beach</div></div><div class="tl-row"><div class="tl-time">19:00</div><div class="tl-text"><span class="tl-meal">Abend</span><a href="https://www.google.com/maps/search/?api=1&query=HOME%20Bistro%20and%20Cafe%20Haeundae%20Busan%20vegan">HOME Bistro and Cafe</a> oder <a href="https://www.google.com/maps/search/?api=1&query=Soban%20Vegan%20Busan">Soban Vegan</a></div></div></div>
       </div>
-    </div>
-<div class="day">
-      <div class="day-date">6.10<span class="dow">Di</span></div>
+    </details>
+<details class="day" open>
+      <summary class="day-summary"><span class="day-date">6.10<span class="dow">Di</span></span><span class="day-title">Busan → Fähre nach Beppu</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Busan → Fähre nach Beppu</div>
         <div class="day-desc">Fähre <b>„New Camellia“</b> (Camellia Line) über die Koreastraße nach Fukuoka/Hakata, ca. 3–3,5 Std. <i>Hinweis: die frühere JR-Beetle-Fähre ist seit Ende 2024 dauerhaft eingestellt, Camellia Line ist aktuell die einzige Passagierfähre auf dieser Route.</i></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">07:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span>Guesthouse, Check-out</div></div><div class="tl-row"><div class="tl-time">08:30</div><div class="tl-text">Zum Fährterminal</div></div><div class="tl-row"><div class="tl-time">09:30</div><div class="tl-text">Abfahrt Fähre „New Camellia“ (Camellia Line), ca. 3–3,5 Std.</div></div><div class="tl-row"><div class="tl-time">Unterwegs</div><div class="tl-text"><span class="tl-meal">Snack</span>Bordverpflegung ist kaum vegan – Snacks/Obst vorher am Terminal besorgen</div></div><div class="tl-row"><div class="tl-time">13:00</div><div class="tl-text">Ankunft Fukuoka/Hakata</div></div><div class="tl-row"><div class="tl-time">14:00</div><div class="tl-text">Zug (Limited Express „Sonic“) nach Beppu</div></div><div class="tl-row"><div class="tl-time">15:30</div><div class="tl-text">Ankunft Beppu</div></div></div>
       </div>
-    </div>
+    </details>
   </div>
 
   <div class="chapter" id="beppu">
@@ -683,31 +713,28 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
       <p>Wie oben im Tagesplan – veganes Kaiseki mind. 3 Tage vorher anfragen.</p>
     </div>
 
-    <div class="day">
-      <div class="day-date">6.10<span class="dow">Di</span></div>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">6.10<span class="dow">Di</span></span><span class="day-title">Ankunft Beppu</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Ankunft Beppu</div>
         <div class="day-desc">Ryokan <b>Nagomitsuki</b> – vegane Sonderwünsche mindestens 3 Tage vorher melden, gleich ein Zimmer mit privatem Bad oder einen Kashikiri-Zeitslot mitreservieren.</div>
         <div class="tags"><span class="tag tag--onsen">Onsen</span><span class="tag tag--vegan">Vegan – vorher anfragen</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">15:30</div><div class="tl-text">Check-in Ryokan Nagomitsuki</div></div><div class="tl-row"><div class="tl-time">17:00</div><div class="tl-text">Erstes Onsen-Bad</div></div><div class="tl-row"><div class="tl-time">19:00</div><div class="tl-text"><span class="tl-meal">Abend</span>Kaiseki im Ryokan (vegan vorbestellt)</div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">7.10<span class="dow">Mi</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">7.10<span class="dow">Mi</span></span><span class="day-title">Jigoku Meguri &amp; Onsen</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Jigoku Meguri &amp; Onsen</div>
         <div class="day-desc">Beppu hat über 100 als tattoo-friendly gelistete Bäder, trotzdem vorab nachsehen statt spontan bei traditionellen Häusern wie Takegawara aufzutauchen. Sicherste Variante bleibt ein Kashikiri-Privatbad im Ryokan.</div>
         <div class="tags"><span class="tag tag--onsen">Onsen – Liste vorab prüfen</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">08:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span><a href="https://www.google.com/maps/search/?api=1&query=Cafe%20SHU%20Beppu%20vegan">Cafe SHU (vegane Dango, Matcha, Pflanzenmilch)</a></div></div><div class="tl-row"><div class="tl-time">09:30</div><div class="tl-text">Jigoku Meguri – die acht bunten „Höllen“ (nur Besichtigung, kein Bad)</div></div><div class="tl-row"><div class="tl-time">13:00</div><div class="tl-text"><span class="tl-meal">Mittag</span><a href="https://www.google.com/maps/search/?api=1&query=Jigoku%20Mushi%20Kobo%20Tetsuwan%20Beppu">Jigoku Mushi Kobo Tetsuwan (Gemüse im Onsendampf garen)</a></div></div><div class="tl-row"><div class="tl-time">15:00</div><div class="tl-text">weiteres Onsen-Bad (tattoo-friendly Liste vorab geprüft)</div></div><div class="tl-row"><div class="tl-time">19:00</div><div class="tl-text"><span class="tl-meal">Abend</span>Ryokan-Kaiseki (vegan vorbestellt) oder Konbini – Beppu ist abseits davon vegan sehr dünn</div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">8.10<span class="dow">Do</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">8.10<span class="dow">Do</span></span><span class="day-title">Letztes Bad &amp; weiter nach Hiroshima</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Letztes Bad &amp; weiter nach Hiroshima</div>
 <div class="timeline"><div class="tl-row"><div class="tl-time">07:30</div><div class="tl-text">letztes Onsen-Bad</div></div><div class="tl-row"><div class="tl-time">08:30</div><div class="tl-text"><span class="tl-meal">Frühstück</span>Ryokan (vegan vorbestellt)</div></div><div class="tl-row"><div class="tl-time">10:00</div><div class="tl-text">Check-out, Zug Richtung Hiroshima (über Kokura/Hakata)</div></div><div class="tl-row"><div class="tl-time">Unterwegs</div><div class="tl-text"><span class="tl-meal">Snack</span>Bahnhofs-Bento ist fast nie vegan – Konbini-Onigiri (Ume/Kombu) oder Obst mitnehmen</div></div><div class="tl-row"><div class="tl-time">13:00</div><div class="tl-text">Ankunft Hiroshima</div></div></div>
       </div>
-    </div>
+    </details>
   </div>
 
   <div class="chapter" id="hiroshima">
@@ -728,20 +755,18 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
       <p>Direkt am Hiroshima-Bahnhof (super praktisch für die Weiterfahrt), seit 2024 mit vegetarischem/veganem Menü in 5 hauseigenen Restaurants.</p>
     </div>
 
-    <div class="day">
-      <div class="day-date">8.10<span class="dow">Do</span></div>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">8.10<span class="dow">Do</span></span><span class="day-title">Ankunft Hiroshima, Friedensgedenkpark &amp; Miyajima</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Ankunft Hiroshima, Friedensgedenkpark &amp; Miyajima</div>
 <div class="timeline"><div class="tl-row"><div class="tl-time">13:00</div><div class="tl-text">Ankunft Hiroshima, Check-in</div></div><div class="tl-row"><div class="tl-time">14:30</div><div class="tl-text">Peace Memorial Park &amp; Museum</div></div><div class="tl-row"><div class="tl-time">Hinweis</div><div class="tl-text"><span class="tl-meal">Mittag</span>Vegan Peace OTEMACHI liegt direkt am Peace Park – <b>Achtung: montags &amp; dienstags geschlossen</b>, also an diesen beiden Tagen nicht anlaufbar</div></div><div class="tl-row"><div class="tl-time">17:00</div><div class="tl-text">Fähre zur Insel Miyajima – schwimmendes Torii-Tor</div></div><div class="tl-row"><div class="tl-time">19:00</div><div class="tl-text"><span class="tl-meal">Abend</span><a href="https://www.google.com/maps/search/?api=1&query=Big%20Apple%20vegan%20Miyajimaguchi%20Hiroshima">Big Apple (Miyajimaguchi, auf dem Weg zur Fähre)</a></div></div><div class="tl-row"><div class="tl-time">20:30</div><div class="tl-text">zurück nach Hiroshima</div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">9.10<span class="dow">Fr</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">9.10<span class="dow">Fr</span></span><span class="day-title">Miyajima-Wanderung → weiter nach Osaka</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Miyajima-Wanderung → weiter nach Osaka</div>
 <div class="timeline"><div class="tl-row"><div class="tl-time">08:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span>Hotel/Konbini</div></div><div class="tl-row"><div class="tl-time">09:00</div><div class="tl-text">Fähre nach Miyajima</div></div><div class="tl-row"><div class="tl-time">09:30</div><div class="tl-text">Aussichtswanderung</div></div><div class="tl-row"><div class="tl-time">12:30</div><div class="tl-text"><span class="tl-meal">Mittag</span><a href="https://www.google.com/maps/search/?api=1&query=Tachibana%20Flowers%20Miyajima%20vegan%20udon">Tachibana („Flowers“), Omotesando-Straße – veganes Udon/Soba</a></div></div><div class="tl-row"><div class="tl-time">14:30</div><div class="tl-text">Fähre zurück, Shinkansen weiter nach Osaka</div></div><div class="tl-row"><div class="tl-time">16:30</div><div class="tl-text">Ankunft Osaka</div></div></div>
       </div>
-    </div>
+    </details>
   </div>
 
   <div class="chapter" id="osaka">
@@ -762,31 +787,28 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
       <p>Direkt in Namba, veganes/vegetarisches Angebot im Haus (auch Zimmerservice). Eher gehoben/über Budget – günstiger: Booking.com-Suche nahe Namba/Shin-Imamiya, dazu MERCY Vegan Factory und AONO CAFE zum Essen.</p>
     </div>
 
-    <div class="day">
-      <div class="day-date">9.10<span class="dow">Fr</span></div>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">9.10<span class="dow">Fr</span></span><span class="day-title">Ankunft, Dotonbori</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Ankunft, Dotonbori</div>
         <div class="tags"><span class="tag tag--vegan">Vegan</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">16:30</div><div class="tl-text">Ankunft, Check-in</div></div><div class="tl-row"><div class="tl-time">18:00</div><div class="tl-text">Dotonbori – Leuchtreklamen &amp; Kanal</div></div><div class="tl-row"><div class="tl-time">19:30</div><div class="tl-text"><span class="tl-meal">Abend</span><a href="https://www.google.com/maps/search/?api=1&query=Vegan%20Ramen%20UZU%20Osaka">Vegan Ramen UZU Osaka</a></div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">10.10<span class="dow">Sa</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">10.10<span class="dow">Sa</span></span><span class="day-title">Universal Studios Japan – Super Nintendo World</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Universal Studios Japan – Super Nintendo World</div>
         <div class="day-desc">Super Nintendo World mit Mario-Kart-Fahrt und der neuen Donkey Kong Country-Erweiterung (Mine-Cart Madness) sind Dauerbrenner mit 2–3 Std. Wartezeit ohne Express Pass.</div>
         <div class="tags"><span class="tag tag--otaku">Gaming – Express Pass vorab buchen</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">07:30</div><div class="tl-text"><span class="tl-meal">Frühstück</span><a href="https://www.google.com/maps/search/?api=1&query=AONO%20CAFE%20Namba%20Osaka%20vegan">AONO CAFE Namba (vegan, Pancakes/Curry)</a></div></div><div class="tl-row"><div class="tl-time">08:30</div><div class="tl-text">Ankunft USJ vor Öffnung</div></div><div class="tl-row"><div class="tl-time">09:00</div><div class="tl-text">Park-Öffnung → direkt zu Super Nintendo World &amp; Donkey Kong Country (Express Pass)</div></div><div class="tl-row"><div class="tl-time">13:00</div><div class="tl-text"><span class="tl-meal">Mittag</span>eigene Snacks mitnehmen (Riegel, Obst, Onigiri) – Essen im Park ist praktisch nie vegan</div></div><div class="tl-row"><div class="tl-time">17:00</div><div class="tl-text">restlicher Park</div></div><div class="tl-row"><div class="tl-time">20:00</div><div class="tl-text"><span class="tl-meal">Abend</span><a href="https://www.google.com/maps/search/?api=1&query=MERCY%20Vegan%20Factory%20Osaka">MERCY Vegan Factory</a></div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">11.10<span class="dow">So</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">11.10<span class="dow">So</span></span><span class="day-title">Osaka Castle &amp; Den Den Town</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Osaka Castle &amp; Den Den Town</div>
         <div class="tags"><span class="tag tag--otaku">Anime/Gaming</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">08:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span><a href="https://www.google.com/maps/search/?api=1&query=ASAKARA%20GOOD%20STORE%20Osaka%20Castle%20vegan">ASAKARA GOOD STORE (direkt am Osaka Castle Park)</a></div></div><div class="tl-row"><div class="tl-time">09:30</div><div class="tl-text">Osaka Castle</div></div><div class="tl-row"><div class="tl-time">12:30</div><div class="tl-text"><span class="tl-meal">Mittag</span><a href="https://www.google.com/maps/search/?api=1&query=Eat%20Vege%20Osaka">Eat Vege</a></div></div><div class="tl-row"><div class="tl-time">14:00</div><div class="tl-text">Den Den Town (Nipponbashi) – Retro-Games, Manga, Capcom Store</div></div><div class="tl-row"><div class="tl-time">17:00</div><div class="tl-text">Zug Richtung Kyoto</div></div></div>
       </div>
-    </div>
+    </details>
   </div>
 
   <div class="chapter" id="kyoto">
@@ -807,38 +829,34 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
       <p>Komplett veganes Minshuku in Higashiyama, hausgemachtes veganes Frühstück inklusive, günstig, gut gelegen für Fushimi Inari &amp; Kiyomizu-dera. Bestes Match auf der ganzen Route.</p>
     </div>
 
-    <div class="day">
-      <div class="day-date">12.10<span class="dow">Mo</span></div>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">12.10<span class="dow">Mo</span></span><span class="day-title">Ankunft Kyoto</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Ankunft Kyoto</div>
 <div class="timeline"><div class="tl-row"><div class="tl-time">18:00</div><div class="tl-text">Zug von Osaka, Ankunft, Check-in</div></div><div class="tl-row"><div class="tl-time">19:30</div><div class="tl-text"><span class="tl-meal">Abend</span>Gion-Viertel Spaziergang – vegan dünn gesät, vor Ort mit HappyCow-App checken oder Nishiki-Markt-Snacks (gegrillter Mais, Mochi – Zutaten prüfen)</div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">13.10<span class="dow">Di</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">13.10<span class="dow">Di</span></span><span class="day-title">Fushimi Inari &amp; Arashiyama</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Fushimi Inari &amp; Arashiyama</div>
         <div class="tags"><span class="tag tag--vegan">Vegan – Shojin Ryori</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">07:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span><a href="https://www.google.com/maps/search/?api=1&query=Vegans%20Cafe%20and%20Restaurant%20Fushimi%20Inari%20Kyoto">Vegans Cafe and Restaurant (direkt bei Fushimi Inari)</a></div></div><div class="tl-row"><div class="tl-time">07:30</div><div class="tl-text">Fushimi Inari (früh, wegen Menschenmassen)</div></div><div class="tl-row"><div class="tl-time">10:00</div><div class="tl-text">Arashiyama: Bambuswald &amp; Tenryu-ji-Tempel</div></div><div class="tl-row"><div class="tl-time">12:30</div><div class="tl-text"><span class="tl-meal">Mittag</span><a href="https://www.google.com/maps/search/?api=1&query=Shigetsu%20Tenryuji%20Kyoto">Shigetsu (Tenryu-ji, Shojin Ryori) – Reservierung nötig</a></div></div><div class="tl-row"><div class="tl-time">19:00</div><div class="tl-text"><span class="tl-meal">Abend</span>zurück in Kyoto – Konbini oder nochmal Vegans Cafe</div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">14.10<span class="dow">Mi</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">14.10<span class="dow">Mi</span></span><span class="day-title">Kurama &amp; Kibune</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Kurama &amp; Kibune</div>
         <div class="day-desc">Das öffentliche Freiluftbecken von <b>Kurama Onsen</b> ist wie die meisten Rotenburo tattoo-restriktiv – stattdessen ein <b>privates Mietbad (Kashikiri)</b> in Kyoto reservieren, Auswahl z.B. über tattoofriendlyonsen.com/private-onsen/kyoto.</div>
         <div class="tags"><span class="tag tag--onsen">Onsen #2 – privat</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">08:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span>Konbini-Stopp vor der Wanderung</div></div><div class="tl-row"><div class="tl-time">09:00</div><div class="tl-text">Wanderung Kurama–Kibune</div></div><div class="tl-row"><div class="tl-time">12:30</div><div class="tl-text"><span class="tl-meal">Mittag</span>kaum vegane Auswahl in den Bergdörfern – eigene Onigiri/Riegel mitnehmen</div></div><div class="tl-row"><div class="tl-time">16:00</div><div class="tl-text">zurück nach Kyoto</div></div><div class="tl-row"><div class="tl-time">18:00</div><div class="tl-text">privates Kashikiri-Bad (Onsen #2)</div></div><div class="tl-row"><div class="tl-time">19:30</div><div class="tl-text"><span class="tl-meal">Abend</span>freie Wahl</div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">15.10<span class="dow">Do</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">15.10<span class="dow">Do</span></span><span class="day-title">Kinkaku-ji, Manga-Museum &amp; weiter nach Hakone</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Kinkaku-ji, Manga-Museum &amp; weiter nach Hakone</div>
         <div class="tags"><span class="tag tag--otaku">Manga</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">08:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span>Guesthouse</div></div><div class="tl-row"><div class="tl-time">09:00</div><div class="tl-text">Kinkaku-ji (Goldener Pavillon)</div></div><div class="tl-row"><div class="tl-time">11:00</div><div class="tl-text">Kyoto International Manga Museum</div></div><div class="tl-row"><div class="tl-time">12:30</div><div class="tl-text"><span class="tl-meal">Mittag</span><a href="https://www.google.com/maps/search/?api=1&query=YES%20CHOICE%20vegan%20Kyoto%20Station">YES CHOICE (nahe Kyoto Bahnhof)</a></div></div><div class="tl-row"><div class="tl-time">13:30</div><div class="tl-text">optional: Nishiki-Markt</div></div><div class="tl-row"><div class="tl-time">14:30</div><div class="tl-text">Zug (Odawara-Shinkansen) weiter nach Hakone</div></div></div>
       </div>
-    </div>
+    </details>
   </div>
 
   <div class="chapter" id="hakone">
@@ -859,22 +877,20 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
       <p>Wie oben im Tagesplan – eigener privater Onsen im Zimmer, veganes Kaiseki mind. 3 Tage vorher anfragen.</p>
     </div>
 
-    <div class="day">
-      <div class="day-date">15.10<span class="dow">Do</span></div>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">15.10<span class="dow">Do</span></span><span class="day-title">Ankunft Hakone</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Ankunft Hakone</div>
         <div class="day-desc"><b>Tensui Saryo</b> – frei wählbares Menü inkl. <b>eigenem privaten Onsen zum Zimmer</b>, damit ist das Tattoo-Thema automatisch gelöst. Alternative: <b>Hakone Yuryo</b> (Kashikiri-Buro, stundenweise mietbar). Vegan <b>mindestens 3 Tage vorher</b> anfragen.</div>
         <div class="tags"><span class="tag tag--onsen">Onsen – privat</span><span class="tag tag--vegan">Vegan – vorher anfragen</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">16:00</div><div class="tl-text">Check-in Tensui Saryo (privater Onsen im Zimmer)</div></div><div class="tl-row"><div class="tl-time">17:30</div><div class="tl-text">erstes Bad</div></div><div class="tl-row"><div class="tl-time">19:00</div><div class="tl-text"><span class="tl-meal">Abend</span>Ryokan-Kaiseki (vegan vorbestellt)</div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">16.10<span class="dow">Fr</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">16.10<span class="dow">Fr</span></span><span class="day-title">Hakone-Seilbahn &amp; weiter nach Tokyo</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Hakone-Seilbahn &amp; weiter nach Tokyo</div>
 <div class="timeline"><div class="tl-row"><div class="tl-time">07:30</div><div class="tl-text"><span class="tl-meal">Frühstück</span><a href="https://www.google.com/maps/search/?api=1&query=Nukafuku%20Gora%20Hakone%20vegan">Nukafuku (Gora-Bahnhof, vegan &amp; glutenfrei)</a></div></div><div class="tl-row"><div class="tl-time">09:00</div><div class="tl-text">Hakone-Seilbahn zum Owakudani-Tal, bei klarem Wetter Blick auf den Fuji</div></div><div class="tl-row"><div class="tl-time">12:00</div><div class="tl-text"><span class="tl-meal">Mittag</span><a href="https://www.google.com/maps/search/?api=1&query=Lakeside%20Eatery%20Hakone%20Ashi%20lake%20vegan">Lakeside Eatery (am Ashi-See/Hakone-Schrein)</a></div></div><div class="tl-row"><div class="tl-time">14:30</div><div class="tl-text">Zug (Odakyu Romancecar/JR) weiter nach Tokyo</div></div><div class="tl-row"><div class="tl-time">16:30</div><div class="tl-text">Ankunft Tokyo</div></div></div>
       </div>
-    </div>
+    </details>
   </div>
 
   <div class="chapter" id="tokyo">
@@ -899,46 +915,41 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
       <p>Falls Shinjuku lieber als Asakusa: eigener Onsen mit Quellwasser aus Hakone mitten in Shinjuku, veganes japanisches Frühstück auf Anfrage möglich.</p>
     </div>
 
-    <div class="day">
-      <div class="day-date">16.10<span class="dow">Fr</span></div>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">16.10<span class="dow">Fr</span></span><span class="day-title">Ankunft Tokyo</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Ankunft Tokyo</div>
 <div class="timeline"><div class="tl-row"><div class="tl-time">16:30</div><div class="tl-text">Ankunft, Check-in im Viertel Shinjuku oder Asakusa</div></div><div class="tl-row"><div class="tl-time">19:00</div><div class="tl-text"><span class="tl-meal">Abend</span><a href="https://www.google.com/maps/search/?api=1&query=Nagi%20Shokudo%20Shibuya%20vegan">Nagi Shokudo (Shibuya)</a></div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">17.10<span class="dow">Sa</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">17.10<span class="dow">Sa</span></span><span class="day-title">Shibuya &amp; Harajuku</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Shibuya &amp; Harajuku</div>
         <div class="tags"><span class="tag tag--vegan">Vegan</span><span class="tag tag--otaku">Gaming</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">08:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span><a href="https://www.google.com/maps/search/?api=1&query=HealthyTOKYO%20CBD%20Cafe%20Shinjuku%20vegan">HealthyTOKYO CBD Cafe (Shinjuku, ab 8 Uhr)</a></div></div><div class="tl-row"><div class="tl-time">09:30</div><div class="tl-text">Shibuya Crossing</div></div><div class="tl-row"><div class="tl-time">10:30</div><div class="tl-text">Nintendo TOKYO (Shibuya PARCO)</div></div><div class="tl-row"><div class="tl-time">12:00</div><div class="tl-text"><span class="tl-meal">Mittag</span>Harajuku/Takeshita Street – Konbini oder Snack unterwegs</div></div><div class="tl-row"><div class="tl-time">13:00</div><div class="tl-text">Meiji-Schrein</div></div><div class="tl-row"><div class="tl-time">19:00</div><div class="tl-text"><span class="tl-meal">Abend</span><a href="https://www.google.com/maps/search/?api=1&query=AIN%20SOPH%20Ripple%20Shinjuku%20vegan">AIN SOPH.Ripple (Shinjuku)</a></div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">18.10<span class="dow">So</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">18.10<span class="dow">So</span></span><span class="day-title">Asakusa, Skytree &amp; Akihabara</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Asakusa, Skytree &amp; Akihabara</div>
         <div class="tags"><span class="tag tag--otaku">Anime/Gaming</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">08:00</div><div class="tl-text"><span class="tl-meal">Frühstück/Mittag</span><a href="https://www.google.com/maps/search/?api=1&query=Marugoto%20Vegan%20Dining%20Asakusa">Marugoto Vegan Dining (Asakusa, nahe Senso-ji)</a></div></div><div class="tl-row"><div class="tl-time">09:00</div><div class="tl-text">Senso-ji-Tempel</div></div><div class="tl-row"><div class="tl-time">11:00</div><div class="tl-text">Tokyo Skytree Town + Pokémon Center Skytree Town</div></div><div class="tl-row"><div class="tl-time">14:00</div><div class="tl-text">Akihabara: Arcades (GiGO), Mandarake, Super Potato</div></div><div class="tl-row"><div class="tl-time">19:00</div><div class="tl-text"><span class="tl-meal">Abend</span><a href="https://www.google.com/maps/search/?api=1&query=Vegan%20Ramen%20UZU%20Ueno%20Tokyo">Vegan Ramen UZU (Ueno-Filiale)</a></div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">19.10<span class="dow">Mo</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">19.10<span class="dow">Mo</span></span><span class="day-title">Ghibli-Museum &amp; Nakano Broadway</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Ghibli-Museum &amp; Nakano Broadway</div>
         <div class="tags"><span class="tag tag--otaku">Anime</span></div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">08:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span><a href="https://www.google.com/maps/search/?api=1&query=Plant%20More%20Shinjuku%20Lumine%20vegan">Plant More (Shinjuku, Lumine 1)</a></div></div><div class="tl-row"><div class="tl-time">10:00</div><div class="tl-text">Ghibli-Museum in Mitaka (Ticket-Slot vorher gebucht!)</div></div><div class="tl-row"><div class="tl-time">13:00</div><div class="tl-text"><span class="tl-meal">Mittag</span>Konbini-Snacks (Edamame, geröstete Erdnüsse sind meist vegan-sicher)</div></div><div class="tl-row"><div class="tl-time">14:30</div><div class="tl-text">Nakano Broadway</div></div><div class="tl-row"><div class="tl-time">19:30</div><div class="tl-text"><span class="tl-meal">Abend</span>letzter freier Abend – nochmal AIN SOPH oder Nagi Shokudo</div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">20.10<span class="dow">Di</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">20.10<span class="dow">Di</span></span><span class="day-title">Letzter Tag Tokyo, Flug nach Seoul</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Letzter Tag Tokyo, Flug nach Seoul</div>
         <div class="day-desc">Rundreise-Ticket Hamburg⇄Seoul war günstiger als Open-Jaw – dafür geht's am Ende nochmal zurück nach Korea. Haneda–Gimpo ist die praktischste Verbindung: beide Flughäfen liegen nah am Stadtzentrum, kein Umweg über Narita/Incheon nötig.</div>
         <div class="tags"><span class="tag tag--link">Inlandsnaher Kurzflug</span></div>
 <div class="timeline"><div class="tl-row"><div class="tl-time">08:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span>Guesthouse/Café</div></div><div class="tl-row"><div class="tl-time">10:00</div><div class="tl-text">letzte Ecken/Souvenirs</div></div><div class="tl-row"><div class="tl-time">13:00</div><div class="tl-text">zum Flughafen Haneda</div></div><div class="tl-row"><div class="tl-time">Hinweis</div><div class="tl-text"><span class="tl-meal">Snack</span>Flughafen hat vereinzelt vegane Kennzeichnung – sonst Onigiri/Snacks vorher besorgen</div></div><div class="tl-row"><div class="tl-time">15:30</div><div class="tl-text">Flug Haneda (HND) → Gimpo (GMP), ca. 2 Std. 10 Min.</div></div><div class="tl-row"><div class="tl-time">18:00</div><div class="tl-text">Ankunft Seoul, Check-in</div></div></div>
       </div>
-    </div>
+    </details>
   </div>
 
 
@@ -960,30 +971,27 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
       <p>Für nur 2 Nächte lohnt ein Wechsel meist nicht – gleiche Gegend wie am Anfang der Reise spart Orientierung. Alternativ THE PLAZA Seoul als Splurge-Abschluss, siehe Buchungslinks.</p>
     </div>
 
-    <div class="day">
-      <div class="day-date">20.10<span class="dow">Di</span></div>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">20.10<span class="dow">Di</span></span><span class="day-title">Zweite Ankunft Seoul</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Zweite Ankunft Seoul</div>
         <div class="day-desc">Zurück in Seoul, diesmal ganz entspannt – keine Sightseeing-Pflicht mehr, die großen Punkte (DMZ, Gyeongbokgung, K-Pop) sind ja schon erledigt.</div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">18:00</div><div class="tl-text">Check-in (gleiche Gegend wie zu Beginn, z.B. Myeongdong/Insadong, empfiehlt sich für kurze Wege)</div></div><div class="tl-row"><div class="tl-time">19:30</div><div class="tl-text"><span class="tl-meal">Abend</span><a href="https://www.google.com/maps/search/?api=1&query=Dahlia%20Dining%20Gangnam%20Seoul%20vegan">Dahlia Dining (Gangnam, modern-vegan)</a> – als Abschluss-Dinner falls noch nicht besucht</div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">21.10<span class="dow">Mi</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">21.10<span class="dow">Mi</span></span><span class="day-title">Letzter freier Tag</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Letzter freier Tag</div>
         <div class="day-desc">Bewusst puffrig geplant: Regenrückfalltag, verpasste Programmpunkte nachholen, oder einfach nochmal die Lieblingsorte der ersten Seoul-Tage besuchen.</div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">09:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span><a href="https://www.google.com/maps/search/?api=1&query=Plant%20Cafe%20and%20Kitchen%20Itaewon%20Seoul%20vegan">Plant Cafe &amp; Kitchen (Itaewon)</a></div></div><div class="tl-row"><div class="tl-time">11:00</div><div class="tl-text">Myeongdong – letzte Souvenirs, Kakao Friends/Line Friends Store</div></div><div class="tl-row"><div class="tl-time">13:00</div><div class="tl-text"><span class="tl-meal">Mittag</span><a href="https://www.google.com/maps/search/?api=1&query=Zion%20Cafe%20Insadong%20Seoul%20vegan">Zion Cafe (Insadong)</a></div></div><div class="tl-row"><div class="tl-time">15:00</div><div class="tl-text">Han-Fluss-Spaziergang oder N Seoul Tower – wer's noch nicht hatte</div></div><div class="tl-row"><div class="tl-time">19:00</div><div class="tl-text"><span class="tl-meal">Abend</span><a href="https://www.google.com/maps/search/?api=1&query=Loving%20Hut%20Seoul%20vegan">Loving Hut Land Café</a></div></div></div>
       </div>
-    </div>
-    <div class="day">
-      <div class="day-date">22.10<span class="dow">Do</span></div>
+    </details>
+    <details class="day" open>
+      <summary class="day-summary"><span class="day-date">22.10<span class="dow">Do</span></span><span class="day-title">Abflug</span><span class="day-chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-body">
-        <div class="day-title">Abflug</div>
         <div class="day-desc">Rundflug Hamburg⇄Seoul – Rückflug ab Incheon (ICN), nicht Gimpo (innerkoreanische/regionale Flüge laufen meist über Gimpo, internationale Langstrecke über Incheon – rechtzeitig Transfer einplanen, ca. 1 Std. je nach Verkehr).</div>
         <div class="timeline"><div class="tl-row"><div class="tl-time">08:00</div><div class="tl-text"><span class="tl-meal">Frühstück</span>Guesthouse/Café</div></div><div class="tl-row"><div class="tl-time">10:00</div><div class="tl-text">Letzte Besorgungen, Gepäck</div></div><div class="tl-row"><div class="tl-time">13:00</div><div class="tl-text">Transfer nach Incheon (ICN)</div></div><div class="tl-row"><div class="tl-time">17:00</div><div class="tl-text">Abflug Richtung Hamburg</div></div></div>
       </div>
-    </div>
+    </details>
   </div>
 
   <!-- ===================== ONSEN RECAP ===================== -->
@@ -1027,12 +1035,14 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
   </div>
 
   <div class="link-group-head">Flüge</div>
+  <div class="scroll-hint">← Tabelle nach rechts wischen für mehr →</div>
   <div class="ledger-scroll"><table class="link-table">
     <tr><td>Hamburg ⇄ Seoul (Rundflug)</td><td><a href="https://www.google.com/travel/flights/flights-from-hamburg-to-seoul.html">Google Flights</a></td><td class="note">Ein Ticket für Hin- und Rückflug – günstiger als Open-Jaw, deshalb die Planänderung. Preise/Zeiten laufend beobachten, ~2–3 Monate vorher buchen.</td></tr>
     <tr><td>Tokyo (Haneda) → Seoul (Gimpo)</td><td><a href="https://www.skyscanner.net/routes/gmp/hnd/gimpo-international-to-tokyo-haneda.html">Skyscanner</a></td><td class="note">Kurzstrecke, viele LCC-Verbindungen täglich – Preise wochentagsabhängig, vor Ort/online buchbar.</td></tr>
   </table></div>
 
   <div class="link-group-head">Bahn &amp; Fähre</div>
+  <div class="scroll-hint">← Tabelle nach rechts wischen für mehr →</div>
   <div class="ledger-scroll"><table class="link-table">
     <tr><td>Japan Rail Pass (14 Tage)</td><td><a href="https://japanrailpass.net/en/purchase/online/">japanrailpass.net</a></td><td class="note">Offizielle Seite – ab 1.10.2026 einzige Möglichkeit, den alten Preis zu bekommen.</td></tr>
     <tr><td>KTX Seoul → Busan</td><td><a href="https://www.korail.com/global/eng/ticket/reservation">korail.com</a></td><td class="note">Offizielle Korail-Seite, komplett auf Englisch, Buchung bis 1 Monat vorher.</td></tr>
@@ -1040,6 +1050,7 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
   </table></div>
 
   <div class="link-group-head">Onsen &amp; Ryokans</div>
+  <div class="scroll-hint">← Tabelle nach rechts wischen für mehr →</div>
   <div class="ledger-scroll"><table class="link-table">
     <tr><td>Tensui Saryo, Hakone</td><td><a href="https://www.booking.com/hotel/jp/tensui-saryo.html">Booking.com</a></td><td class="note">Vegane Kaiseki-Anfrage am besten zusätzlich direkt per Mail/Telefon ans Ryokan.</td></tr>
     <tr><td>Hakone Yuryo (Kashikiri-Buro)</td><td><a href="https://www.hakoneyuryo.jp/english/spa/hotspring/">hakoneyuryo.jp</a></td><td class="note">Offizielle Seite, Buchung über TableCheck-Link darauf. Privatbäder frühestens 1 Monat / spätestens 5 Tage vorher reservierbar.</td></tr>
@@ -1047,6 +1058,7 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
   </table></div>
 
   <div class="link-group-head">Sehenswürdigkeiten &amp; Tickets</div>
+  <div class="scroll-hint">← Tabelle nach rechts wischen für mehr →</div>
   <div class="ledger-scroll"><table class="link-table">
     <tr><td>Universal Studios Japan / Super Nintendo World</td><td><a href="https://www.usj.co.jp/e/">usj.co.jp</a></td><td class="note">Studio Pass + Express Pass hier oder z.B. bei Klook.</td></tr>
     <tr><td>Ghibli-Museum Tickets</td><td><a href="https://l-tike.com/">l-tike.com (Lawson Ticket Intl.)</a></td><td class="note">Verkaufsstart 10.9., 10 Uhr JST – siehe Hinweis oben.</td></tr>
@@ -1058,6 +1070,7 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
   </table></div>
 
   <div class="link-group-head">Restaurants</div>
+  <div class="scroll-hint">← Tabelle nach rechts wischen für mehr →</div>
   <div class="ledger-scroll"><table class="link-table">
     <tr><td>Shigetsu (Tenryu-ji, Kyoto)</td><td><a href="https://www.tenryuji.com/en/shigetsu/">tenryuji.com</a></td><td class="note">Offizielle Reservierung, 2 Pers. mind. 3 Tage vorher.</td></tr>
     <tr><td>AIN SOPH.Ripple (Shinjuku)</td><td><a href="https://en.ain-soph.jp/locations">en.ain-soph.jp</a></td><td class="note">Reservierung telefonisch (+81 3-6380-3205) oder vor Ort.</td></tr>
@@ -1068,17 +1081,20 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
   </table></div>
 
   <div class="link-group-head">Bonus-Bäder Seoul</div>
+  <div class="scroll-hint">← Tabelle nach rechts wischen für mehr →</div>
   <div class="ledger-scroll"><table class="link-table">
     <tr><td>SPAREX (Dongdaemun/Dongmyo)</td><td><a href="https://www.klook.com/activity/133675-seoul-dongdaemun-sparex-jjimjilbang-sauna-admission-ticket/">Klook</a></td><td class="note">Keine eigene offizielle Buchungsseite, Ticket via Klook oder Tageskasse.</td></tr>
   </table></div>
 
   <div class="link-group-head">K-Pop</div>
+  <div class="scroll-hint">← Tabelle nach rechts wischen für mehr →</div>
   <div class="ledger-scroll"><table class="link-table">
     <tr><td>K-Pop-Dance-Class (Gangnam)</td><td><a href="https://www.klook.com/en-US/activity/3248-kpop-dance-class-seoul/">Klook</a></td><td class="note">Von CNN/BBC featured, Anfänger willkommen, ca. 1–2 Std.</td></tr>
     <tr><td>KWANGYA@SEOUL (Seongsu)</td><td><a href="https://www.google.com/maps/search/?api=1&query=KWANGYA%20SEOUL%20Seongsu">Google Maps</a></td><td class="note">Kein Ticket nötig, freier Eintritt in den Store.</td></tr>
   </table></div>
 
   <div class="link-group-head">DMZ &amp; Grenze</div>
+  <div class="scroll-hint">← Tabelle nach rechts wischen für mehr →</div>
   <div class="ledger-scroll"><table class="link-table">
     <tr><td>DMZ &amp; JSA Full-Day-Tour</td><td><a href="https://www.viator.com/tours/Seoul/Korean-Demilitarized-Zone-DMZ-and-JSA-Panmunjom-Tour-from-Seoul/d973-5754ICNDMZJSA">Viator</a></td><td class="note">Passdaten-Anmeldung vorher nötig, nur Di–Sa. Ca. 150.000+ Won p.P.</td></tr>
     <tr><td>DMZ Halbtags-Tour (ohne JSA)</td><td><a href="https://www.klook.com/en-US/activity/75287-tour-dmz-seoul-guide/">Klook</a></td><td class="note">Alternative ohne Grenzlinien-Besuch, dafür entspannter buchbar und günstiger (Dritter Tunnel, Dora-Observatorium). Lässt sich auch an einem anderen Seoul-Tag als Vormittagsprogramm einschieben.</td></tr>
@@ -1089,6 +1105,7 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
   <div class="section-head" id="dos-donts"><h2>Japan: Do's &amp; Don'ts</h2><span class="tag-note">Damit's kein teures Souvenir wird</span></div>
 
   <div class="link-group-head">Kann echt Geld kosten</div>
+  <div class="scroll-hint">← Tabelle nach rechts wischen für mehr →</div>
   <div class="ledger-scroll"><table class="link-table">
     <tr><td>Rauchen außerhalb Raucherzonen</td><td class="amt" style="text-align:left;">≈ 2.000 ¥</td><td class="note">Sofort-Bußgeld z.B. in Chiyoda (Tokyo), bei Wiederholung/anderen Bezirken bis 300.000 ¥. Nur in markierten Smoking Areas rauchen.</td></tr>
     <tr><td>Müll auf die Straße werfen</td><td class="amt" style="text-align:left;">2.000–30.000 ¥</td><td class="note">Shibuya kassiert seit Juni 2026 sofort 2.000 ¥ vor Ort. Öffentliche Mülleimer sind selten – eigenen Müll tagsüber mitnehmen.</td></tr>
@@ -1143,6 +1160,7 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
   </div>
 
   <div class="link-group-head">Koreanisch</div>
+  <div class="scroll-hint">← Tabelle nach rechts wischen für mehr →</div>
   <div class="ledger-scroll"><table class="link-table">
     <tr><td>Hallo</td><td><span class="native">안녕하세요</span><span class="roman">Annyeonghaseyo</span></td></tr>
     <tr><td>Danke</td><td><span class="native">감사합니다</span><span class="roman">Gamsahamnida</span></td></tr>
@@ -1159,6 +1177,7 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
   </table></div>
 
   <div class="link-group-head">Japanisch</div>
+  <div class="scroll-hint">← Tabelle nach rechts wischen für mehr →</div>
   <div class="ledger-scroll"><table class="link-table">
     <tr><td>Hallo (tagsüber)</td><td><span class="native">こんにちは</span><span class="roman">Konnichiwa</span></td></tr>
     <tr><td>Danke</td><td><span class="native">ありがとうございます</span><span class="roman">Arigatou gozaimasu</span></td></tr>
@@ -1301,5 +1320,89 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
   </footer>
 
 </div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---- Theme toggle: cycles system -> light -> dark -> system ----
+  var root = document.documentElement;
+  var toggle = document.getElementById('themeToggle');
+  var STORAGE_KEY = 'jp-kr-theme';
+  function applyTheme(mode){
+    if(mode === 'light' || mode === 'dark'){
+      root.setAttribute('data-theme', mode);
+    } else {
+      root.removeAttribute('data-theme');
+    }
+    if(toggle){
+      toggle.textContent = mode === 'dark' ? '☾' : mode === 'light' ? '☼' : '◐';
+      toggle.setAttribute('aria-label', 'Design: ' + (mode === 'dark' ? 'dunkel' : mode === 'light' ? 'hell' : 'System') + ' (klicken zum Wechseln)');
+    }
+  }
+  var saved = null;
+  try { saved = localStorage.getItem(STORAGE_KEY); } catch(e){}
+  applyTheme(saved || 'system');
+  if(toggle){
+    toggle.addEventListener('click', function(){
+      var current = null;
+      try { current = localStorage.getItem(STORAGE_KEY); } catch(e){}
+      var next = current === 'light' ? 'dark' : current === 'dark' ? 'system' : 'light';
+      try { localStorage.setItem(STORAGE_KEY, next); } catch(e){}
+      applyTheme(next);
+    });
+  }
+
+  // ---- Reading progress bar ----
+  var fill = document.getElementById('progressFill');
+  var backtotop = document.getElementById('backtotop');
+  function onScroll(){
+    var scrollTop = window.scrollY || document.documentElement.scrollTop;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+    if(fill) fill.style.width = pct + '%';
+    if(backtotop){
+      if(scrollTop > 600) backtotop.classList.add('visible');
+      else backtotop.classList.remove('visible');
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // ---- Scrollspy: highlight active nav chip ----
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.topnav a[data-nav]'));
+  var linkById = {};
+  navLinks.forEach(function(a){ linkById[a.getAttribute('href').slice(1)] = a; });
+  var targets = navLinks.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); }).filter(Boolean);
+
+  function setActive(id){
+    navLinks.forEach(function(a){ a.classList.remove('active'); });
+    var link = linkById[id];
+    if(link){
+      link.classList.add('active');
+      var container = document.getElementById('topnavInner');
+      if(container){
+        var lr = link.getBoundingClientRect(), cr = container.getBoundingClientRect();
+        if(lr.left < cr.left || lr.right > cr.right){
+          container.scrollLeft += (lr.left - cr.left) - (cr.width - lr.width) / 2;
+        }
+      }
+    }
+  }
+
+  if('IntersectionObserver' in window && targets.length){
+    var current = targets[0] ? targets[0].id : null;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          current = entry.target.id;
+        }
+      });
+      if(current) setActive(current);
+    }, {rootMargin: '-45% 0px -50% 0px', threshold: 0});
+    targets.forEach(function(t){ io.observe(t); });
+  }
+})();
+</script>
 </body>
 </html>
