@@ -149,7 +149,8 @@
   .link-table{width:100%;min-width:600px;border-collapse:collapse;font-size:.88rem;}
   .link-table th{text-align:left;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;padding:.45rem .6rem;border-bottom:1px solid var(--rule);}
   .link-table td{padding:.5rem .6rem;border-bottom:1px solid var(--rule);vertical-align:top;}
-  .link-table td.note{color:var(--ink-soft);font-size:.8rem;}
+  .link-table td:not(.note){white-space:nowrap;}
+  .link-table td.note{color:var(--ink-soft);font-size:.8rem;white-space:normal;min-width:220px;}
   .link-table a{color:var(--indigo);text-decoration:underline;text-decoration-color:var(--rule);word-break:break-word;}
   .link-group-head{padding:1.2rem 0 .4rem;font-family:ui-monospace,monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--indigo-soft);}
   .link-table .native{display:block;font-size:1.05rem;color:var(--ink);}
