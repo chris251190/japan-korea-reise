@@ -209,6 +209,18 @@
     .topnav,.backtotop,.progressbar{display:none !important;}
     details.day{border-color:#ccc;}
   }
+  table.ueb{width:100%;border-collapse:collapse;font-size:.88rem;}
+  table.ueb th{text-align:left;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;padding:.4rem .6rem;border-bottom:2px solid var(--rule);white-space:nowrap;}
+  table.ueb td{padding:.5rem .6rem;border-bottom:1px solid var(--rule);vertical-align:top;}
+  table.ueb td.d{font-weight:700;white-space:nowrap;}
+  table.ueb td.o{font-weight:600;min-width:9rem;}
+  table.ueb td.note{color:var(--ink-soft);font-size:.8rem;min-width:12rem;}
+  table.ueb tr.travel td{background:var(--paper-raised);}
+  table.ueb tr.travel td.d,table.ueb tr.travel td.o{color:var(--kaki);}
+  table.ueb .t{line-height:1.45;font-family:ui-monospace,"SF Mono","Cascadia Mono",Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap;display:block;}
+  table.ueb td:nth-child(3) .t{color:var(--indigo);}
+  table.ueb td:nth-child(4) .t{color:var(--moss);}
+  table.ueb .t0{color:var(--rule);}
 </style>
 
 <svg width="0" height="0" style="position:absolute">
@@ -560,31 +572,32 @@ c44 -29 69 -32 95 -8 15 13 23 14 44 5 33 -16 31 -16 39 18 5 25 11 30 26 25
   </div>
 
   <!-- ===================== ÜBERBLICK ===================== -->
-  <div class="section-head" id="ueberblick"><h2>Überblick: Wann wo?</h2><span class="tag-note">Tag für Tag, mit Ankunft &amp; Abfahrt</span></div>
+  <div class="section-head" id="ueberblick"><h2>Überblick: Wann wo?</h2><span class="tag-note">Hervorgehoben = Reisetag</span></div>
   <div class="scroll-hint">← Tabelle nach rechts wischen für mehr →</div>
-  <div class="ledger-scroll"><table class="link-table">
-    <tr><td><b>Do 1.10.</b></td><td>Hamburg → Seoul</td><td class="note">Abflug HAM <b>07:10</b> (LOT, 1 Stopp) · Reisetag, Landung erst am 2.10.</td></tr>
-    <tr><td><b>Fr 2.10.</b></td><td>Seoul</td><td class="note">Landung ICN <b>06:20</b> · ca. 09:00 im Luminouse X (Gepäck abstellen) · Abendessen Légume 19:00</td></tr>
-    <tr><td><b>Sa 3.10.</b></td><td>Seoul</td><td class="note">Gyeongbokgung ab 09:00 · Mittag Balwoo Gongyang 14:00</td></tr>
-    <tr><td><b>So 4.10.</b></td><td>Seoul</td><td class="note">DMZ-Tour, Abholung <b>07:00</b> (City Hall, Ausgang 6), zurück ca. 16:00 · abends SPAREX 18:00</td></tr>
-    <tr><td><b>Mo 5.10.</b></td><td>Seoul → Busan</td><td class="note">KTX ab Seoul ca. <b>11:30</b>, an Busan <b>14:00</b> · Fähre „New Camellia“ ab Busan <b>22:30</b> (Check-in 16:30–18:30)</td></tr>
-    <tr><td><b>Di 6.10.</b></td><td>Hakata → Beppu</td><td class="note">Fähre an Hakata <b>07:30</b> · Zug „Sonic“ ab Hakata ca. <b>09:45</b> · Check-in Nagomitsuki ca. 15:30</td></tr>
-    <tr><td><b>Mi 7.10.</b></td><td>Beppu</td><td class="note">Jigoku Meguri ab 09:30</td></tr>
-    <tr><td><b>Do 8.10.</b></td><td>Beppu → Hiroshima</td><td class="note">Check-out <b>10:00</b> · Ankunft Hiroshima ca. <b>13:00</b> (Sheraton Grand)</td></tr>
-    <tr><td><b>Fr 9.10.</b></td><td>Hiroshima → Hirakata (Osaka)</td><td class="note">Miyajima-Fähre 09:30, zurück ca. 15:00 · Ankunft Hirakata ca. <b>17:00</b> (Candeo Hotels)</td></tr>
-    <tr><td><b>Sa 10.10.</b></td><td>Hirakata · USJ</td><td class="note">Abfahrt Hotel <b>07:15</b> (50–65 Min. bis USJ)</td></tr>
-    <tr><td><b>So 11.10.</b></td><td>Osaka</td><td class="note">Osaka Castle ab 09:30, Den Den Town</td></tr>
-    <tr><td><b>Mo 12.10.</b></td><td>Hirakata → Kyoto</td><td class="note">Check-out <b>11:00</b> · Ankunft Kyoto ca. <b>12:00</b> (Imu Hotel) · Kimono 13:00</td></tr>
-    <tr><td><b>Di 13.10.</b></td><td>Kyoto</td><td class="note">Fushimi Inari <b>07:30</b> · Arashiyama ab 10:00 · Mittag Shigetsu 12:30</td></tr>
-    <tr><td><b>Mi 14.10.</b></td><td>Kyoto</td><td class="note">Kurama–Kibune ab 09:00, zurück 16:00 · Koffer per Takkyubin ab 17:00</td></tr>
-    <tr><td><b>Do 15.10.</b></td><td>Kyoto → Hakone</td><td class="note">Kinkaku-ji 09:00, Manga-Museum 11:00 · Check-in Gora Kansuiro ca. <b>16:00</b>, Kaiseki 19:00</td></tr>
-    <tr><td><b>Fr 16.10.</b></td><td>Hakone → Tokyo</td><td class="note">Seilbahn ab 09:00 · Romancecar ab Hakone-Yumoto <b>14:30</b> · Ankunft Tokyo ca. <b>16:30</b> (Inn Oyado Matsumura)</td></tr>
-    <tr><td><b>Sa 17.10.</b></td><td>Tokyo</td><td class="note">Shibuya SKY 10:00 · Veganic Monkey Magic 19:00–22:30</td></tr>
-    <tr><td><b>So 18.10.</b></td><td>Tokyo</td><td class="note">Senso-ji 08:30 · Skytree &amp; Akihabara</td></tr>
-    <tr><td><b>Mo 19.10.</b></td><td>Tokyo</td><td class="note">Nakano Broadway &amp; Akihabara (Ghibli-Museum ausverkauft)</td></tr>
-    <tr><td><b>Di 20.10.</b></td><td>Tokyo → Seoul</td><td class="note">Keisei Access ab Asakusa <b>09:30</b> · Flug YP734 Narita <b>13:05</b> → Incheon <b>15:40</b> · Check-in Urbanstay ca. 17:30–18:00</td></tr>
-    <tr><td><b>Mi 21.10.</b></td><td>Seoul</td><td class="note">Freier Tag – abends packen</td></tr>
-    <tr><td><b>Do 22.10.</b></td><td>Seoul → Hamburg</td><td class="note">Abfahrt Urbanstay <b>04:45</b> (Flughafenbus 05:00) · Abflug ICN <b>08:10</b> (LOT, 1 Stopp) · Ankunft Hamburg <b>18:55</b></td></tr>
+  <div class="ledger-scroll"><table class="ueb">
+    <tr><th>Tag</th><th>Ort</th><th>Abfahrt</th><th>Ankunft</th><th>Sonst</th></tr>
+    <tr class="travel"><td class="d">Do 1.10.</td><td class="o">Hamburg → Seoul</td><td><span class="t">07:10 HAM</span></td><td><span class="t">Fr 06:20 ICN</span></td><td class="note">LOT, 1 Stopp · komplett Reisetag</td></tr>
+    <tr><td class="d">Fr 2.10.</td><td class="o">Seoul</td><td><span class="t0">–</span></td><td><span class="t">09:00 Apartment</span></td><td class="note">Gepäck abstellen · 19:00 Légume</td></tr>
+    <tr><td class="d">Sa 3.10.</td><td class="o">Seoul</td><td><span class="t0">–</span></td><td><span class="t0">–</span></td><td class="note">09:00 Gyeongbokgung · 14:00 Balwoo Gongyang</td></tr>
+    <tr><td class="d">So 4.10.</td><td class="o">Seoul</td><td><span class="t">07:00 City Hall</span></td><td><span class="t">~16:00 zurück</span></td><td class="note">DMZ-Tour · 18:00 SPAREX</td></tr>
+    <tr class="travel"><td class="d">Mo 5.10.</td><td class="o">Seoul → Busan → Fähre</td><td><span class="t">11:30 KTX</span><br><span class="t">22:30 Fähre</span></td><td><span class="t">14:00 Busan</span></td><td class="note">Fähr-Check-in 16:30–18:30 · Nacht an Bord</td></tr>
+    <tr class="travel"><td class="d">Di 6.10.</td><td class="o">Hakata → Beppu</td><td><span class="t">09:45 Zug „Sonic“</span></td><td><span class="t">07:30 Hakata</span><br><span class="t">~15:30 Beppu</span></td><td class="note">Check-in Nagomitsuki</td></tr>
+    <tr><td class="d">Mi 7.10.</td><td class="o">Beppu</td><td><span class="t0">–</span></td><td><span class="t0">–</span></td><td class="note">09:30 Jigoku Meguri</td></tr>
+    <tr class="travel"><td class="d">Do 8.10.</td><td class="o">Beppu → Hiroshima</td><td><span class="t">10:00 Check-out</span></td><td><span class="t">~13:00 Hiroshima</span></td><td class="note">Sheraton Grand</td></tr>
+    <tr class="travel"><td class="d">Fr 9.10.</td><td class="o">Hiroshima → Hirakata</td><td><span class="t">~15:00 (ab Miyajima)</span></td><td><span class="t">~17:00 Hirakata</span></td><td class="note">09:30 Miyajima-Fähre · Candeo Hotels</td></tr>
+    <tr><td class="d">Sa 10.10.</td><td class="o">Hirakata · USJ</td><td><span class="t">07:15 Hotel</span></td><td><span class="t">~08:30 USJ</span></td><td class="note">Super Nintendo World</td></tr>
+    <tr><td class="d">So 11.10.</td><td class="o">Osaka</td><td><span class="t0">–</span></td><td><span class="t0">–</span></td><td class="note">09:30 Osaka Castle · Den Den Town</td></tr>
+    <tr class="travel"><td class="d">Mo 12.10.</td><td class="o">Hirakata → Kyoto</td><td><span class="t">11:00 Check-out</span></td><td><span class="t">~12:00 Kyoto</span></td><td class="note">13:00 Kimono · Imu Hotel</td></tr>
+    <tr><td class="d">Di 13.10.</td><td class="o">Kyoto</td><td><span class="t0">–</span></td><td><span class="t0">–</span></td><td class="note">07:30 Fushimi Inari · 12:30 Shigetsu</td></tr>
+    <tr><td class="d">Mi 14.10.</td><td class="o">Kyoto</td><td><span class="t0">–</span></td><td><span class="t">16:00 zurück</span></td><td class="note">09:00 Kurama–Kibune · 17:00 Koffer-Versand</td></tr>
+    <tr class="travel"><td class="d">Do 15.10.</td><td class="o">Kyoto → Hakone</td><td><span class="t0">–</span></td><td><span class="t">~16:00 Hakone</span></td><td class="note">09:00 Kinkaku-ji · 11:00 Manga-Museum · 19:00 Kaiseki</td></tr>
+    <tr class="travel"><td class="d">Fr 16.10.</td><td class="o">Hakone → Tokyo</td><td><span class="t">14:30 Romancecar</span></td><td><span class="t">~16:30 Tokyo</span></td><td class="note">09:00 Seilbahn · Inn Oyado Matsumura</td></tr>
+    <tr><td class="d">Sa 17.10.</td><td class="o">Tokyo</td><td><span class="t0">–</span></td><td><span class="t0">–</span></td><td class="note">10:00 Shibuya SKY · 19:00 Monkey Magic</td></tr>
+    <tr><td class="d">So 18.10.</td><td class="o">Tokyo</td><td><span class="t0">–</span></td><td><span class="t0">–</span></td><td class="note">08:30 Senso-ji · Skytree &amp; Akihabara</td></tr>
+    <tr><td class="d">Mo 19.10.</td><td class="o">Tokyo</td><td><span class="t0">–</span></td><td><span class="t0">–</span></td><td class="note">Nakano &amp; Akihabara</td></tr>
+    <tr class="travel"><td class="d">Di 20.10.</td><td class="o">Tokyo → Seoul</td><td><span class="t">09:30 Asakusa</span><br><span class="t">13:05 NRT</span></td><td><span class="t">15:40 ICN</span><br><span class="t">~17:30 Urbanstay</span></td><td class="note">Flug YP734 · Check-in Narita 11:00</td></tr>
+    <tr><td class="d">Mi 21.10.</td><td class="o">Seoul</td><td><span class="t0">–</span></td><td><span class="t0">–</span></td><td class="note">Freier Tag · abends packen</td></tr>
+    <tr class="travel"><td class="d">Do 22.10.</td><td class="o">Seoul → Hamburg</td><td><span class="t">04:45 Urbanstay</span><br><span class="t">08:10 ICN</span></td><td><span class="t">18:55 HAM</span></td><td class="note">LOT, 1 Stopp · Flughafenbus 05:00</td></tr>
   </table></div>
 
   <div class="callout" style="border-left-color:var(--kaki);">
